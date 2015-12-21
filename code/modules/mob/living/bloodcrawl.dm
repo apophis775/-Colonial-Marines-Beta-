@@ -1,6 +1,3 @@
-#define BLOODCRAWL 1
-#define BLOODCRAWL_EAT 2
-
 /obj/effect/dummy/slaughter //Can't use the wizard one, blocked by jaunt/slow
 	name = "water"
 	icon = 'icons/effects/effects.dmi'
@@ -9,6 +6,8 @@
 	density = 0
 	anchored = 1
 	invisibility = 60
+	burn_state = LAVA_PROOF
+
 
 obj/effect/dummy/slaughter/relaymove(mob/user, direction)
 	if (!src.canmove || !direction) return
@@ -18,12 +17,12 @@ obj/effect/dummy/slaughter/relaymove(mob/user, direction)
 	spawn(1)
 		src.canmove = 1
 
-/obj/effect/dummy/slaughter/ex_act(blah)
+/obj/effect/dummy/slaughter/ex_act()
 	return
-/obj/effect/dummy/slaughter/bullet_act(blah)
+/obj/effect/dummy/slaughter/bullet_act()
 	return
 
-/obj/effect/dummy/slaughter/singularity_act(blah)
+/obj/effect/dummy/slaughter/singularity_act()
 	return
 
 /obj/effect/dummy/slaughter/Destroy()

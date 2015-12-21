@@ -63,6 +63,11 @@
 	caliber = ".45"
 	projectile_type = /obj/item/projectile/bullet/midbullet
 
+/obj/item/ammo_casing/c45nostamina
+	desc = "A .45 bullet casing."
+	caliber = ".45"
+	projectile_type = /obj/item/projectile/bullet/weakbullet3
+
 /obj/item/ammo_casing/shotgun
 	name = "shotgun slug"
 	desc = "A 12 gauge lead slug."
@@ -211,12 +216,6 @@
 	reagents.add_reagent("mutetoxin", 6) //;HELP OPS IN MAINT
 	reagents.add_reagent("coniine", 6)
 	reagents.add_reagent("sodium_thiopental", 6)
-
-/obj/item/ammo_casing/a762
-	desc = "A 7.62mm bullet casing."
-	icon_state = "762-casing"
-	caliber = "a762"
-	projectile_type = /obj/item/projectile/bullet
 
 /obj/item/ammo_casing/a556
 	desc = "A 5.56mm bullet casing."
