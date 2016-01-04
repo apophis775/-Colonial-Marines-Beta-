@@ -453,14 +453,16 @@
 				cover = new /obj/machinery/porta_turret_cover(loc)	//if the turret has no cover and is anchored, give it a cover
 				cover.Parent_Turret = src	//assign the cover its Parent_Turret, which would be this (src)
 
-	if(stat & (NOPOWER|BROKEN) && !always_up)
-		//if the turret has no power or is broken, make the turret pop down if it hasn't already
-		popDown()
+	if(stat & (NOPOWER|BROKEN))
+		if(!always_up)
+			//if the turret has no power or is broken, make the turret pop down if it hasn't already
+			popDown()
 		return
 
-	if(!on && !always_up)
-		//if the turret is off, make it pop down
-		popDown()
+	if(!on)
+		if(!always_up)
+			//if the turret is off, make it pop down
+			popDown()
 		return
 
 	var/list/targets = list()			//list of primary targets
@@ -892,7 +894,7 @@
 	. = ..()
 	if(.)
 		return
-	
+
 	return Parent_Turret.attack_ai(user)
 
 
@@ -984,6 +986,11 @@
 		return 0
 	return 10
 
+/obj/machinery/porta_turret/syndicate/pod
+	health = 40
+	projectile = /obj/item/projectile/bullet/weakbullet3
+	eprojectile = /obj/item/projectile/bullet/weakbullet3
+
 ////////////////////////
 //Turret Control Panel//
 ////////////////////////
@@ -1019,7 +1026,7 @@
 			if(A.name == control_area)
 				control_area = A
 				break
-	
+
 	if(!control_area)
 		var/area/CA = get_area(src)
 		if(CA.master && CA.master != CA)

@@ -289,8 +289,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		else if(isAI(M))
 			var/mob/living/silicon/ai/A = M
 			if(A.laws && A.laws.zeroth && A.mind && A.mind.special_role)
-				if(ticker.mode.config_tag == "malfunction" && M.mind in ticker.mode.malf_ai)//Malf law is a law 0
-					return 2
 				return 1
 		return 0
 	if(M.mind && M.mind.special_role)//If they have a mind and special role, they are some type of traitor or antagonist.
@@ -309,6 +307,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 					return 2
 			if("wizard")
 				if(M.mind in ticker.mode.wizards)
+					return 2
+			if("apprentice")
+				if(M.mind in ticker.mode.apprentices)
 					return 2
 			if("monkey")
 				if(M.viruses && (locate(/datum/disease/transformation/jungle_fever) in M.viruses))

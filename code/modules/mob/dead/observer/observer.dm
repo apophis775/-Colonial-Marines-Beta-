@@ -24,6 +24,7 @@ var/list/image/ghost_darkness_images = list() //this is a list of images for thi
 	var/seedarkness = 1
 	var/ghost_hud_enabled = 1 //did this ghost disable the on-screen HUD?
 	var/data_hud_seen = 0 //this should one of the defines in __DEFINES/hud.dm
+	var/ghost_orbit = GHOST_ORBIT_CIRCLE
 
 /mob/dead/observer/New(mob/body)
 	sight |= SEE_TURFS | SEE_MOBS | SEE_OBJS | SEE_SELF
@@ -136,13 +137,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		stat(null, "Station Time: [worldtime2text()]")
 		if(ticker)
 			if(ticker.mode)
-				//world << "DEBUG: ticker not null"
-				if(ticker.mode.name == "AI malfunction")
-					var/datum/game_mode/malfunction/malf = ticker.mode
-					//world << "DEBUG: malf mode ticker test"
-					if(malf.malf_mode_declared && (malf.apcs > 0))
-						stat(null, "Time left: [max(malf.AI_win_timeleft/malf.apcs, 0)]")
-
 				for(var/datum/gang/G in ticker.mode.gangs)
 					if(isnum(G.dom_timer))
 						stat(null, "[G.name] Gang Takeover: [max(G.dom_timer, 0)]")
@@ -207,7 +201,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Orbit" // "Haunt"
 	set desc = "Follow and orbit a mob."
 
-	var/list/mobs = getpois()
+	var/list/mobs = getpois(skip_mindless=1)
 	var/input = input("Please, select a mob!", "Haunt", null, null) as null|anything in mobs
 	var/mob/target = mobs[input]
 	ManualFollow(target)
@@ -225,7 +219,21 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	if(orbiting != target)
 		src << "<span class='notice'>Now orbiting [target].</span>"
 
-	orbit(target,orbitsize,0)
+	var/rot_seg
+
+	switch(ghost_orbit)
+		if(GHOST_ORBIT_TRIANGLE)
+			rot_seg = 3
+		if(GHOST_ORBIT_SQUARE)
+			rot_seg = 4
+		if(GHOST_ORBIT_PENTAGON)
+			rot_seg = 5
+		if(GHOST_ORBIT_HEXAGON)
+			rot_seg = 6
+		else //Circular
+			rot_seg = 36 //360/10 bby, smooth enough aproximation of a circle
+
+	orbit(target,orbitsize, FALSE, 20, rot_seg)
 
 /mob/dead/observer/orbit()
 	..()

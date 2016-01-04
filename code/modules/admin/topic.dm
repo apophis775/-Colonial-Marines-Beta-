@@ -59,13 +59,6 @@
 				else
 					message_admins("[key_name_admin(usr)] tried to start a cult. Unfortunately, there were no candidates available.")
 					log_admin("[key_name(usr)] failed to start a cult.")
-			if("5")
-				if(src.makeMalfAImode())
-					message_admins("[key_name(usr)] caused an AI to malfunction.")
-					log_admin("[key_name(usr)] caused an AI to malfunction.")
-				else
-					message_admins("[key_name_admin(usr)] tried to cause an AI to malfunction. Unfortunately, there were no candidates available.")
-					log_admin("[key_name(usr)] failed to cause an AI to malfunction.")
 			if("6")
 				message_admins("[key_name(usr)] is creating a wizard...")
 				if(src.makeWizard())
@@ -1477,12 +1470,12 @@
 	else if(href_list["adminplayerobservefollow"])
 		if(!isobserver(usr) && !check_rights(R_ADMIN))	return
 
-		var/mob/M = locate(href_list["adminplayerobservefollow"])
+		var/atom/movable/AM = locate(href_list["adminplayerobservefollow"])
 
 		var/client/C = usr.client
 		if(!isobserver(usr))	C.admin_ghost()
 		var/mob/dead/observer/A = C.mob
-		A.ManualFollow(M)
+		A.ManualFollow(AM)
 
 	else if(href_list["adminplayerobservecoodjump"])
 		if(!isobserver(usr) && !check_rights(R_ADMIN))	return
