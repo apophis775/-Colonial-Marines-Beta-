@@ -85,7 +85,7 @@
 
 // BEGIN_INCLUDE
 #include "_maps\__MAP_DEFINES.dm"
-#include "_maps\tgstation2.dm"
+#include "_maps\StarTrek.dm"
 #include "code\_compile_options.dm"
 #include "code\hub.dm"
 #include "code\world.dm"
@@ -1627,6 +1627,9 @@
 #include "code\modules\security levels\security levels.dm"
 #include "code\modules\shuttle\shuttle.dm"
 #include "code\modules\space transition\space_transition.dm"
+#include "code\modules\ST\away_missions\defines.dm"
+#include "code\modules\ST\away_missions\procs.dm"
+#include "code\modules\ST\away_missions\modules\modules.dm"
 #include "code\modules\ST\starmap\defines.dm"
 #include "code\modules\ST\starmap\procs.dm"
 #include "code\modules\ST\starship\defines.dm"

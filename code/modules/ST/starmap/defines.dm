@@ -88,7 +88,8 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 			descrip = "A highly unstable, radioactive star."
 			return //Nothing else here, sorry.
 
-		if(!istype(master)) return //Just to be safe..
+		if(!istype(master))
+			return //Just to be safe..
 
 		if(rand(100) < 20)
 			master.create_sector_object("planet/large")

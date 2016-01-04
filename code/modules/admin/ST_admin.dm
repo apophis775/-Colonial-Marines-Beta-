@@ -1,3 +1,5 @@
+//Don't forget to add them to admin_verbs.dm!
+
 /client/proc/Display_Sector()
 	set category = "Debug"
 	set name = "Display Sector Data"
@@ -62,3 +64,54 @@
 	log_admin("New starmap generated")
 	message_admins("<span class='adminnotice'>New starmap generated!</span>")
 	feedback_add_details("admin_verb","CNW") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+
+/client/proc/away_debugg_forest()
+	set category = "Debug"
+	set name = "Fill AwaySlot (rand)"
+
+	if(!check_rights(R_DEBUG))	return
+
+	if(!usr.loc || !istype(get_area(usr.loc),/area/away))
+		usr << "Only in an away mission area."
+		return
+
+	var/area/away/A = get_area(usr.loc)
+	var/datum/away_slot/AS = A.slot_dat
+
+	if(!AS)
+		usr << "No slot data found!"
+		return
+
+	var/text = input(usr,"What is the name of the generator? The part that comes after /mapGenerator/?","Random Map","grassy")
+	AS.fill_with_random(text)
+	return
+
+/client/proc/insert_test_map()
+	set category = "Debug"
+	set name = "Fill AwaySlot (dmm)"
+
+	if(!check_rights(R_DEBUG))	return
+
+	if(!usr.loc || !istype(get_area(usr.loc),/area/away))
+		usr << "Only in an away mission area."
+		return
+
+	var/area/away/A = get_area(usr.loc)
+	var/datum/away_slot/AS = A.slot_dat
+
+	if(!AS)
+		usr << "No slot data found! Probably no starmap."
+		return
+
+	if(!maploader)
+		usr << "Maploader not found!"
+		return
+
+	var/text = input(usr,"What is the name of the map you want to load? It must be in the away missions folder.","Load Map","test_20.dmm")
+
+	var/map = "_maps/map_files/Star_Trek/away_missions/[text]"
+
+	AS.fill_with_dmm(map)
+	return
+

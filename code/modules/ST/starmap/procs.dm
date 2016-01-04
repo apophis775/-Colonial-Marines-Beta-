@@ -2,6 +2,10 @@
 
 //Initialize all the nodes. Loop through the entire grid.
 /datum/starmap/proc/initiate()
+
+	if(!all_away_slots.len)
+		initialize_awayslots()
+
 	if(max_x < 1 || max_x > 20 || max_y < 1 || max_y > 20 ||max_z < 1 || max_z > 20)
 		message_admins("Starmap failed to initiate! Bad values!")
 		return //Nope.
@@ -9,6 +13,7 @@
 	var/min_x = 0
 	var/min_y = 0
 	var/min_z = 0
+	var/i = 0
 
 	if(negative_allowed)
 		min_x = -max_x
@@ -18,8 +23,10 @@
 	for(var/cur_x = min_x to max_x)
 		for(var/cur_y = min_y to max_y)
 			for(var/cur_z = min_z to max_z)
-				spawn(0)
-					create_node(cur_x,cur_y,cur_z)
+				create_node(cur_x,cur_y,cur_z)
+				i++
+	sleep(0)
+	world << "<B>Starmap</b> [max_x][max_y][max_z] completed! Total sector nodes: [i]."
 
 //Create a new node datum and link it to the master starmap.
 /datum/starmap/proc/create_node(var/x,var/y,var/z)

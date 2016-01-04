@@ -137,6 +137,8 @@ var/list/admin_verbs_debug = list(
 	/client/proc/create_outfits,
 	/client/proc/create_universe,
 	/client/proc/Display_Sector,
+	/client/proc/away_debugg_forest,
+	/client/proc/insert_test_map,
 	/client/proc/debug_huds
 	)
 var/list/admin_verbs_possess = list(
