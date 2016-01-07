@@ -129,12 +129,14 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 		gravity = pick("Low","Normal","Normal","Normal","High")
 		radiation = rand(0,100)
 		minerals = rand(0,15000)
+		faction = pick("Federation","Federation","Federation","Romulan","Romulan","Klingon","Klingon","Ferengi","Cardassian","Bajoran","Pirate","Neutral","Neutral","Neutral", "Neutral")
 		switch(planet_class)
 			if("D") //Dead planet or moon. No atmosphere.
 				gravity = pick("Low","Low","Normal","Normal","High")
 				weather = "None"
 				planet_type = pick("Barren","(Moon)","Dead")
 				life_signs = "None"
+				faction = "Neutral"
 
 			if("H") //Generally uninhabitable. Volcanic, etc.
 				rotation = pick("Eccentric","Eccentric","Tilted","Tilted","Erratic","Erratic","Normal","Normal")
@@ -144,6 +146,7 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = pick("Low","Medium","High","High","Extreme")
 				weather = pick("Low","Medium","High","High","Extreme")
 				life_signs = pick("None","None","None","Proto")
+				faction = "Neutral"
 
 			if("J") //Common gas giant.
 				weather = pick("High","High","Extreme")
@@ -153,6 +156,7 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				planet_type = "Gas Giant"
 				life_signs = "None"
 				minerals = 0
+				faction = "Neutral"
 
 			if("K") //Habitable, with help.
 				rotation = pick("Eccentric","Eccentric","Tilted","Tilted","Erratic","Erratic","Normal","Normal")
@@ -177,8 +181,6 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				gravity = pick("Low","Normal","Normal","Normal")
 				weather = pick("Low","Medium")
 				life_signs = pick("Complex Plants","Complex Mixed","Primitive","Industrial","Modern")
-				if(life_signs == "Modern" || life_signs == "Industrial")
-					faction = pick("Federation","Federation","Federation","Romulan","Romulan","Klingon","Klingon","Ferengi","Cardassian","Bajoran","Pirate","Neutral","Neutral","Neutral")
 				if(master.faction != "Neutral")
 					faction = master.faction
 
@@ -187,8 +189,8 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = "None"
 				gravity = "Extreme"
 				atmosphere = "Sulphuric"
-				planet_type = "Sulfuric Gas Giant"
-				life_signs = "???"
+				planet_type = "Sulphuric Gas Giant"
+				life_signs = pick("None","???")
 				minerals = 0
 
 			if("T") //Uncommon gas giant
@@ -207,11 +209,12 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = "Extreme"
 				atmosphere = "???"
 				planet_type = "Demon World"
-				life_signs = "???"
+				life_signs = pick("None","???")
 				radiation = rand(0,150000)
 				minerals = rand(0,150000)
+				faction = "Neutral"
 
-		descrip = "A planet. Rot: [rotation] W:[weather] V: [volcanism] Atm: [atmosphere] LS: [life_signs]"
+		descrip = "A planet. R:[rotation] W:[weather] V:[volcanism] Atm:[atmosphere] LS:[life_signs]."
 
 /datum/sector_object/planet/small
 	obj_name = "Small Planet"
