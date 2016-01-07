@@ -41,7 +41,6 @@ proc/initialize_awayslots()
 		message_admins("Warning: Tried to recycle slot [src.num] but can't due to players present.")
 		return //Never recycle it if there's actual players here.
 
-
 	message_admins("Notice: Recycling away slot: [num].")
 
 	for(var/X in block(locate(x_start,y_start,z_start),locate(x_end,y_end,z_end)))
@@ -69,13 +68,12 @@ proc/initialize_awayslots()
 		if((M.client || M.key))
 			src.players_here++
 
-	sleep(0)
 	return src.players_here
 
 //TODO: Add transporter waypoints to these!
 
 //Takes a map file name, fills the correct slot with it.
-/datum/away_slot/proc/fill_with_dmm(var/map = "_maps/map_files/Star_Trek/away_missions/test.dmm")
+/datum/away_slot/proc/fill_with_dmm(var/map = "_maps/map_files/Star_Trek/away_missions/test_20.dmm")
 	if(in_use)
 		recycle_block()
 
@@ -129,4 +127,50 @@ proc/initialize_awayslots()
 	N:generate()
 	message_admins("Random map '[M]' generated in slot [num].")
 	in_use = 1
+	return
+
+proc/find_empty_slot(var/size)
+	if(size != 20 && size != 50)
+		size = 20
+
+	for(var/datum/away_slot/D in all_away_slots)
+		if(size == 50)
+			if(D.size_x == size)
+				if(D.num == 1 && D.in_use)
+					continue //Check the next one.
+				else
+					return D
+				if(D.num == 2 && D.in_use) //Shit, both taken. Abort
+					return null
+				else
+					return D
+		else
+			if(D.size_x > 20 || D.in_use) continue //Skip it.
+
+			return D
+
+	//Nothing.
+	return null
+
+proc/fill_next_slot(var/type,var/value,var/size)
+
+	var/datum/away_slot/D = find_empty_slot(size)
+
+	if(isnull(D))	 //All slots are in use. Let's find the next one without players.
+		for(var/datum/away_slot/S in all_away_slots)
+			if(S.count_players() > 0) continue //There's people here!
+			if(S.size_x == size) //Found one without players, with the correct size. Fill it!
+				D.recycle_block()
+				D = S
+				break
+
+	if(!istype(D) || isnull(D))   //ALL slots are full of people? That sucks.
+		message_admins("Attention: Fill_next_slot tried to fill an away mission slot, but failed. Probably full?")
+		return null
+
+	if(type == "dmm")
+		D.fill_with_dmm(value) //Value in this case is the full map dmm file path, starting with "_maps".
+	else
+		D.fill_with_random(value) //Value in this case is the procedural generator module type. nature, desert, etc.
+
 	return

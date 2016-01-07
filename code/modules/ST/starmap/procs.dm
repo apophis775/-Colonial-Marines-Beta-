@@ -49,7 +49,7 @@
 		create_sector_object("star") //This will fill in all the planets, and the planets will add stuff too.
 		sleep(0)
 
-	var/spawn_num = pick(0,0,1,1,1,2,2,3) //How much extra shit is there here?
+	var/spawn_num = pick(0,0,1,2,2,2,2,3) //How much extra shit is there here?
 
 	if(x == 0 && y == 0 && z == 0) //Yay starbase!
 		ship_here = 1
@@ -59,7 +59,7 @@
 		return
 	else
 		if(rand(0,1) == 0) //50% base chance of it being claimed.
-			if(rand(0,3) == 0)
+			if(rand(0,2) == 0)
 				faction = "Federation"
 			else if(rand(0,4) == 0)
 				faction = "Romulan"
