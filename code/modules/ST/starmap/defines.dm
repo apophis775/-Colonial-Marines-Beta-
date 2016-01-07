@@ -1,4 +1,3 @@
-
 var/global/datum/starmap/starMap
 var/global/list/all_sector_objects = list() //All -actual- existing stellar objects. This is sad on resources. :(
 var/global/list/all_so_types = list() //A global list of all potential stellar objects to choose from.
@@ -67,26 +66,199 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 	number_in_name = 1
 	max_per_sector = 1
 	chance = 0
-	onscreen_image = null //Change this when we get images
 	var/startype
+	var/starsize
 
 	initialize()
 		..()
-		if(rand(100) < 5)
-			obj_name = "Black Hole"
-			descrip = "A roiling mass of gravity and radiation."
-			radiation = rand(150000,250000)
-			return //Nothing else is ever at a black hole.
 
-		startype = pick("Yellow Dwarf","White Dwarf","Red Giant","Red Dwarf","Supergiant","Pulsar","Neutron Star")
+		//Let's do the super rare ones first
+		//Each star, hole, or anything with stable mass can have their own exoplanets.
+		//But there wont be any life on them if they are orbiting the black hole, for example
+		if(rand(100) < 3)
+			startype = pick(0,0,0,0,0,0,0,0,\
+							1,1,1,1,1,1,1,\
+							2,2,2,2,2,2,\
+							3,3,3,3,3,\
+							4,4,4,4,4,\
+							5,5,5,5,\
+							6,6,6,6,\
+							7,7,\
+							8,8,\
+							9,9,\
+							10,10,\
+							11,11,\
+							12)
 
-		//We're not going to bother actually making subtypes for these. We could, though.
-		obj_name = startype
-		radiation += rand(-1000,1000)
-		if(startype == "Pulsar" || startype == "Neutron Star")
-			radiation += 50000//This will do weird things and allow collection of rare materials.
-			descrip = "A highly unstable, radioactive star."
-			return //Nothing else here, sorry.
+//Black Hole				= 0
+//Neutron Star				= 1
+//Pulsar					= 2
+//Wolf Rayet				= 3
+//Carbon Star				= 4
+//Extreme Hydrogen Star		= 5
+//PMS Star					= 6
+//ElectroWeak Star			= 7
+//White Hole				= 8
+//Technetium Star			= 9
+//Iron Star					= 10
+//Peculiar star				= 11
+//Dark Star					= 12
+
+			switch(startype)
+				if(0) //Black Hole
+					obj_name = "Black Hole"
+					startype = "Black Hole"
+					descrip = "A roiling mass of gravity and radiation."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+
+				if(1) //Neutorn Star
+					obj_name = "Neutorn Star"
+					startype = "Neutron Star"
+					descrip = "A highly unstable, small, radioactive star."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+					if(!istype(master))
+						return //Just to be safe..
+					master.create_sector_object("nebula/supernova")
+
+
+				if(2) //Pulsar
+					obj_name = "Pulsar"
+					startype = "Pulsar"
+					descrip = "A highly unstable, small, radioactive star."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+					if(!istype(master))
+						return //Just to be safe..
+					master.create_sector_object("nebula/supernova")
+
+
+				if(3) //Class W: Wolf-Rayet
+					obj_name = "Class W: Wolf-Rayet (Blue Super Giant)"
+					starsize = "Super Giant"
+					startype = "Blue"
+					descrip = "A dying supergiant with their hydrogen layers blown away by stellar winds. Extremely hot and massive."
+					//radiation += rand(-1000,1000)
+					//onscreen_image = "" Later
+
+					if(!istype(master))
+						return //Just to be safe..
+					master.create_sector_object("nebula/planetary")
+
+
+				if(4) //Class C: Carbon Star
+					starsize = pick("Giant", "Bright Giant", "Super Giant")
+					obj_name = "Class C: Carbon Star (Red [starsize])"
+					startype = "Red"
+					descrip = "Red [starsize], near the end of its life, in which there is an excess of carbon in the atmosphere."
+					//radiation += rand(-1000,1000)
+					//onscreen_image = "" Later
+
+					if(!istype(master))
+						return //Just to be safe..
+					master.create_sector_object("nebula/planetary")
+
+
+				if(5) //Extreme helium star
+					starsize = pick("Bright Giant", "Super Giant")
+					obj_name = "[starsize] Extreme Helium Star"
+					descrip = "Almost devoid of hydrogen, the most common chemical element of the Universe."
+					//radiation += rand(-1000,1000)
+					//onscreen_image = "" Later
+
+
+				if(6) //PMS Star
+					obj_name = "PMS Star"
+					starsize = "Dwarf"
+					descrip = "A pre-main-sequence star is a star in the stage when it has not yet reached started hydrogen burning."
+					//onscreen_image = "" Later
+
+
+				if(7) //Electroweak Star
+					obj_name = "Electroweak Star"
+					startype = "Electroweak Star"
+					descrip = "A highly unstable, radioactive star. The star's core is at the size of an apple, containing about two Earth masses. This must be the first ever record of an existing Electroweak Star."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+					//Spawn Supernova Remnant
+					if(!istype(master))
+						return //Just to be safe..
+					master.create_sector_object("nebula/supernova")
+
+
+				if(8) //White Hole
+					obj_name = "White Hole"
+					startype = "White Hole"
+					descrip = "Opposite of black hole. This must be the first ever record of an existing White Hole."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+
+				if(9) //Technetium Star
+					obj_name = "Technetium Star"
+					startype = "Technetium Star"
+					descrip = "A Tc-rich star. It is a star whose stellar spectrum contains absorption lines of the light radioactive metal technetium. The most stable isotope of technetium is 98Tc with a half-life of 4.2 million years, which is too short a time to allow the metal to be material from before the star's formation."
+					//onscreen_image = "" Later
+
+
+				if(10) //Iron Star
+					obj_name = "Iron Star"
+					startype = "Iron Star"
+					descrip = "A compact star that cold fusion occurring via quantum tunnelling caused  the light nuclei in ordinary matter to fuse into iron-56 nuclei. Fission and alpha-particle emission would then make heavy nuclei decay into iron, converting stellar-mass objects to cold spheres of iron."
+					//onscreen_image = "" Later
+
+
+				if(11) //Peculiar star
+					obj_name = "Peculiar star"
+					startype = "Peculiar star"
+					descrip = "Star with distinctly unusual metal abundances, at least in their surface layers."
+					//onscreen_image = "" Later
+
+
+				if(12) //Dark Star
+					obj_name = "Dark star"
+					startype = "Blue"
+					starsize = "Hyper Giant"
+					descrip = "Has a surface escape velocity that equals or exceeds the speed of light. Any light emitted at the surface of a dark star would be trapped by the star's gravity, rendering it dark."
+					//radiation = rand(150000,250000)
+					//onscreen_image = "" Later
+
+/*TODO:
+Quasars
+Blazars
+Brown Dwarfs/Sub Dwarfs
+*/
+
+		else //If not special, pick normal ones
+			radiation += rand(-1000,1000)
+
+			//Blue HyperGiants are the most rarest of all below
+			starsize = pick("Sub Dwarf", "Sub Dwarf", "Sub Dwarf", "Sub Dwarf", "Sub Dwarf",\
+							"Dwarf", "Dwarf", "Dwarf", "Dwarf", "Dwarf", "Dwarf", "Dwarf",\
+							"Sub Giant", "Sub Giant", "Sub Giant", "Sub Giant", "Sub Giant",\
+							"Giant", "Giant", "Giant", "Giant",\
+							"Bright Giant", "Bright Giant", "Bright Giant",\
+							"Super Giant", "Super Giant",\
+							"Hyper Giant")
+
+
+			startype = pick("Red", "Red", "Red", "Red", "Red", "Red", "Red",\
+							"Orange", "Orange", "Orange", "Orange", "Orange", "Orange",\
+							"Yellow", "Yellow", "Yellow", "Yellow", "Yellow",\
+							"Yellow-White", "Yellow-White", "Yellow-White", "Yellow-White",\
+							"White", "White", "White",\
+							"Blue-White", "Blue-White",\
+							"Blue")
+
+
+			obj_name = "[startype] [starsize]"
+			//onscreen_image = "[starsize]" Later
+
 
 		if(!istype(master))
 			return //Just to be safe..
@@ -106,6 +278,7 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 			for(var/i = 0 to randsteroids)
 				master.create_sector_object("asteroid_small")
 
+
 /datum/sector_object/planet
 	obj_name = "Medium Planet"
 	var/planet_class = "M"
@@ -123,20 +296,24 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 		..()
 		generate_planet()
 
-
 	proc/generate_planet()
+		//Generate planets depending on the star they orbit.
+
+		//Orbiting normal stars (Wolf-Rayet and Carbon Star included)
 		planet_class = pick("D","D","D","D","H","H","J","J","J","K","L","L","L","M","M","M","M","M","N","T","Y")
+		//TODO:
+			//Orbiting dead stars
+				//planet_class = pick("D","D","D","D","H","H","J","J","J","N","T","Y")
+
 		gravity = pick("Low","Normal","Normal","Normal","High")
 		radiation = rand(0,100)
 		minerals = rand(0,15000)
-		faction = pick("Federation","Federation","Federation","Romulan","Romulan","Klingon","Klingon","Ferengi","Cardassian","Bajoran","Pirate","Neutral","Neutral","Neutral", "Neutral")
 		switch(planet_class)
 			if("D") //Dead planet or moon. No atmosphere.
 				gravity = pick("Low","Low","Normal","Normal","High")
 				weather = "None"
 				planet_type = pick("Barren","(Moon)","Dead")
 				life_signs = "None"
-				faction = "Neutral"
 
 			if("H") //Generally uninhabitable. Volcanic, etc.
 				rotation = pick("Eccentric","Eccentric","Tilted","Tilted","Erratic","Erratic","Normal","Normal")
@@ -146,7 +323,6 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = pick("Low","Medium","High","High","Extreme")
 				weather = pick("Low","Medium","High","High","Extreme")
 				life_signs = pick("None","None","None","Proto")
-				faction = "Neutral"
 
 			if("J") //Common gas giant.
 				weather = pick("High","High","Extreme")
@@ -156,7 +332,6 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				planet_type = "Gas Giant"
 				life_signs = "None"
 				minerals = 0
-				faction = "Neutral"
 
 			if("K") //Habitable, with help.
 				rotation = pick("Eccentric","Eccentric","Tilted","Tilted","Erratic","Erratic","Normal","Normal")
@@ -181,6 +356,8 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				gravity = pick("Low","Normal","Normal","Normal")
 				weather = pick("Low","Medium")
 				life_signs = pick("Complex Plants","Complex Mixed","Primitive","Industrial","Modern")
+				if(life_signs == "Modern" || life_signs == "Industrial")
+					faction = pick("Federation","Federation","Federation","Romulan","Romulan","Klingon","Klingon","Ferengi","Cardassian","Bajoran","Pirate","Neutral","Neutral","Neutral")
 				if(master.faction != "Neutral")
 					faction = master.faction
 
@@ -189,8 +366,8 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = "None"
 				gravity = "Extreme"
 				atmosphere = "Sulphuric"
-				planet_type = "Sulphuric Gas Giant"
-				life_signs = pick("None","???")
+				planet_type = "Sulfuric Gas Giant"
+				life_signs = "???"
 				minerals = 0
 
 			if("T") //Uncommon gas giant
@@ -209,12 +386,11 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 				volcanism = "Extreme"
 				atmosphere = "???"
 				planet_type = "Demon World"
-				life_signs = pick("None","???")
+				life_signs = "???"
 				radiation = rand(0,150000)
 				minerals = rand(0,150000)
-				faction = "Neutral"
 
-		descrip = "A planet. R:[rotation] W:[weather] V:[volcanism] Atm:[atmosphere] LS:[life_signs]."
+		descrip = "A planet. Rot: [rotation] W: [weather] V: [volcanism] Atm: [atmosphere] LS: [life_signs]"
 
 /datum/sector_object/planet/small
 	obj_name = "Small Planet"
@@ -249,7 +425,7 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 		radiation = rand(0,10)
 
 /datum/sector_object/asteroid_large
-	obj_name = "Large Asteroid Field"
+	obj_name = "Large Asteroid Belt"
 	descrip = "A large belt of rocks drifting through space."
 	chance = 15
 	faction = "Neutral"
@@ -266,16 +442,74 @@ var/global/list/all_so_types = list() //A global list of all potential stellar o
 	obj_name = "Radioactive Anomaly"
 	descrip = "A large, strange anomalous sector of space."
 	chance = 15
+	var/anomaly_type
+	var/anomaly_size
 
 	initialize()
 		..()
-		radiation = 15000 + rand(-5000,25000)
+
+		anomaly_type = pick("Radioactive","Radioactive", "Gravitron", "Antigravitron")
+		anomaly_size = pick("Small","Small","Small", "Large","Large", "Giant")
+		switch(anomaly_type)
+			if("Radioactive")
+				obj_name = "Radioactive Anomaly"
+				descrip = "A [anomaly_size] Radioactive Anomaly. Emmits a massive ammount of radiation."
+				radiation = rand(25000,250000)
+
+			if("Gravitron")
+				obj_name = "Gravitron Anomaly"
+				descrip = "A [anomaly_size] Gravitron Anomaly. Emmits a massive gravity pull."
+				radiation = 5000 + rand(-500,25000)
+
+			if("Antigravitron")
+				obj_name = "Antigravitron Anomaly"
+				descrip = "A [anomaly_size] Antigravitron Anomaly. Emmits a massive gravity push."
+				radiation = 5000 + rand(-500,25000)
+
 
 /datum/sector_object/nebula
-	obj_name = "Radioactive Nebula"
+	obj_name = "H II Nebula"
 	descrip = "A massive cloud of glowing gas."
 	chance = 20
+	radiation = 5000
+//	var/nebula_type
 
 	initialize()
 		..()
-		radiation = 5000 + rand(-500,25000)
+/*
+		nebula_type = pick("H II", "Planetary Nebula", "Supernova Remnant", "Dark Nebula")
+		switch(nebula_type)
+			if("H II")
+				obj_name = "H II Nebula"
+				descrip = "A massive cloud of glowing gas."
+			if("Planetary nebulae") //Can only be found near dying stars
+				obj_name = "Planetary Nebula"
+				descrip = "A massive cloud of glowing gas. Caused by the solar winds blowing away gasses from the dying star"
+				radiation += rand(500,2500)
+			if("Supernova Remnant")//Can only be found near neutron stars and black and white holes
+				obj_name = "Supernova Remnant"
+				descrip = "A massive cloud of glowing gas. Caused by supernova explosion."
+				radiation += rand(2500,25000)
+			if("Dark Nebula")//Blocks scanning of the node this is in, unless you are already inside the node?
+				obj_name = "Dark Nebula"
+				descrip = "A massive cloud of higly densed gas. It prevents light from the other side from going trough it."
+*/
+		radiation += rand(-radiation*0.25,radiation*2)
+
+/datum/sector_object/nebula/planetary
+	obj_name = "Planetary nebulae"
+	descrip = "A massive cloud of glowing gas. Caused by the solar winds blowing away gasses from the dying star"
+	chance = 0 //Automaticaly spawned with dying stars
+	radiation = 25000
+
+/datum/sector_object/nebula/supernova
+	obj_name = "Supernova Remnant"
+	descrip = "A massive cloud of glowing gas. Caused by supernova explosion."
+	chance = 0 //Automaticaly spawned with neutron stars
+	radiation = 50000
+
+/datum/sector_object/nebula/dark_nebula
+	obj_name = "Dark Nebula"
+	descrip = "A massive cloud of higly densed gas. It prevents light from the other side from going trough it."
+	chance = 5
+	radiation = 5000
